@@ -1,9 +1,9 @@
 use pinocchio::{
-    account_info::AccountInfo, default_allocator, default_panic_handler, entrypoint, msg,
+    account_info::AccountInfo, default_allocator, default_panic_handler,
     program_entrypoint, pubkey::Pubkey, ProgramResult,
 };
 
-use crate::{instructions::Instructions, processor};
+use crate::processor;
 
 program_entrypoint!(process_instruction);
 default_allocator!();

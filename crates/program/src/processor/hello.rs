@@ -29,7 +29,7 @@ impl<'a> TryFrom<&'a [AccountInfo]> for HelloAccounts<'a> {
     }
 }
 
-impl<'a> HelloAccounts<'a> {
+impl HelloAccounts<'_> {
     pub fn handler(&self, ix: Instructions) -> ProgramResult {
         let Instructions::Hello { msg: msg_data } = ix else {
             return Err(ProgramError::InvalidInstructionData);
