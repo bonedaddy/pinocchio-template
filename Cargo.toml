@@ -6,7 +6,7 @@ resolver = "2"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/bonedaddy/rust-template"
-rust-version = "1.86"
+rust-version = "1.84.1"
 
 [profile.release]
 lto = "fat"
@@ -17,9 +17,4 @@ incremental = false
 opt-level = 3
 incremental = false
 codegen-units = 1
-
-[workspace.dependencies]
-tokio = {version = "1.44.2", features = ["full", "parking_lot"]}
-anyhow = {version  = "1"}
-serde = {version = "1", features = ["derive"]}
 

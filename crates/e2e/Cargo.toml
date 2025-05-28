@@ -1,0 +1,20 @@
+[package]
+name = "e2e"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies.program]
+path = "../program"
+features = ["no-entrypoint"]
+[dependencies.litesvm_client]
+git = "https://github.com/bonedaddy/litesvm-client"
+rev = "3030a4b50db5c6edae67cc2ed8fda4204418fbeb"
+[dependencies.solana-sdk]
+version = "2"
+[dependencies.litesvm]
+version = "0.6.1"
+[dependencies.sdk]
+path = "../sdk"
