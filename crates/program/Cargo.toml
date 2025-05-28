@@ -18,6 +18,10 @@ version = "0.8.4"
 version = "0.2.4 "
 [dependencies.pinocchio-system]
 version = "0.2.3"
+[dependencies.borsh]
+version = "1"
+[dependencies.borsh-derive]
+version = "1"
 [dependencies.bytemuck]
 version = "1"
 features = ["derive", "min_const_generics"]

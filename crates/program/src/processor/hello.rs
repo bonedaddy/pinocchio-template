@@ -5,7 +5,7 @@ use pinocchio::{
     ProgramResult,
 };
 
-use crate::{instructions::Instructions, state::hello::Message};
+use crate::{instructions::Instructions, prelude::*, state::hello::Message};
 
 pub struct HelloAccounts<'a> {
     payer: &'a AccountInfo,
@@ -49,7 +49,9 @@ impl HelloAccounts<'_> {
         pinocchio::msg!(&format!("{} {}", self.msg.data_len(), msg_data.len()));
 
         let mut data = self.msg.try_borrow_mut_data()?;
-        data.copy_from_slice(&Message { msg: msg_data }.pack());
+        Message { msg: msg_data }
+            .serialize(&mut &mut data[..])
+            .unwrap();
 
         Ok(())
     }

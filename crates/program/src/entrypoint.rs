@@ -1,6 +1,6 @@
 use pinocchio::{
-    account_info::AccountInfo, default_allocator, default_panic_handler,
-    program_entrypoint, pubkey::Pubkey, ProgramResult,
+    account_info::AccountInfo, default_allocator, default_panic_handler, program_entrypoint,
+    pubkey::Pubkey, ProgramResult,
 };
 
 use crate::processor;
