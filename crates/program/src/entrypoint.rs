@@ -3,7 +3,7 @@ use pinocchio::{
     program_entrypoint, pubkey::Pubkey, ProgramResult,
 };
 
-use crate::instructions::Instructions;
+use crate::{instructions::Instructions, processor};
 
 program_entrypoint!(process_instruction);
 default_allocator!();
@@ -14,12 +14,7 @@ pub fn process_instruction(
     accounts: &[AccountInfo],
     instruction_data: &[u8],
 ) -> ProgramResult {
-    let ix = Instructions::unpack(instruction_data)?;
+    assert!(program_id.eq(&crate::ID));
 
-    match ix {
-        Instructions::Hello { msg } => {
-            msg!(&String::from_utf8(msg).unwrap());
-        }
-    }
-    Ok(())
+    processor::process(accounts, instruction_data)
 }

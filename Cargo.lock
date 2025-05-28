@@ -2500,6 +2500,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "pinocchio-system"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1f75423420ae70aa748cf611cab14cfd00af08d0d2d3d258cb0cf5e2880ec19c"
+dependencies = [
+ "pinocchio",
+ "pinocchio-pubkey",
+]
+
+[[package]]
 name = "pkg-config"
 version = "0.3.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2578,11 +2588,10 @@ dependencies = [
 name = "program"
 version = "0.1.0"
 dependencies = [
- "litesvm",
- "litesvm_client",
+ "bytemuck",
  "pinocchio",
  "pinocchio-pubkey",
- "solana-sdk",
+ "pinocchio-system",
 ]
 
 [[package]]

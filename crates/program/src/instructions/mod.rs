@@ -4,6 +4,9 @@ use pinocchio::program_error::ProgramError;
 #[derive(Clone)]
 pub enum Instructions {
     /// Discriminator (0)
+    /// Accounts
+    /// 0. [writeable] - msg account
+    /// 1. [] - system_program
     Hello { msg: Vec<u8> },
 }
 

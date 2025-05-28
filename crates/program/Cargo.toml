@@ -10,18 +10,14 @@ rust-version.workspace = true
 crate-type = ["cdylib", "rlib"]
 
 [features]
-default = []
 no-entrypoint = []
 
 [dependencies.pinocchio]
 version = "0.8.4"
 [dependencies.pinocchio-pubkey]
 version = "0.2.4 "
-
-[dev-dependencies.litesvm_client]
-git = "https://github.com/bonedaddy/litesvm-client"
-rev = "3030a4b50db5c6edae67cc2ed8fda4204418fbeb"
-[dev-dependencies.solana-sdk]
-version = "2"
-[dev-dependencies.litesvm]
-version = "0.6.1"
+[dependencies.pinocchio-system]
+version = "0.2.3"
+[dependencies.bytemuck]
+version = "1"
+features = ["derive", "min_const_generics"]
