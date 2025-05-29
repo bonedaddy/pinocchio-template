@@ -1,15 +1,17 @@
 use pinocchio::{
     account_info::AccountInfo,
+    instruction::Instruction,
     program_error::ProgramError,
     sysvars::{rent::Rent, Sysvar},
     ProgramResult,
 };
 use putils::{
-    account::{AccountDeserialize, AccountSerialize, AccountWrite},
+    account::{AccountDeserialize, AccountRead, AccountSerialize, AccountWrite},
+    instruction_packer::InstructionPacker,
     processor::InstructionProcessor,
 };
 
-use crate::{instructions::Instructions, prelude::*, state::hello::Message};
+use crate::{instructions::Instructions, state::hello::Message};
 
 pub struct HelloAccounts<'a> {
     payer: &'a AccountInfo,
@@ -68,7 +70,16 @@ impl<'a> InstructionProcessor<'a, Instructions> for HelloAccounts<'a> {
 
         pinocchio::msg!("reading");
 
-        let _ = Message::try_from_bytes(&self.msg.try_borrow_data()?).unwrap();
+        let _ = Message::account_read(self.msg).unwrap();
+
+        pinocchio::cpi::invoke(
+            &Instruction {
+                program_id: &crate::ID,
+                data: &Instructions::Noop { msg: msg_data }.pack(),
+                accounts: &[],
+            },
+            &[],
+        )?;
 
         Ok(())
     }

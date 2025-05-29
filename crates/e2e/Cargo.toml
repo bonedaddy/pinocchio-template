@@ -17,6 +17,6 @@ version = "2"
 [dependencies.litesvm]
 version = "0.6.1"
 [dependencies.putils]
-version = "0.0.4"
+version = "0.0.5"
 [dependencies.sdk]
 path = "../sdk"

@@ -21,3 +21,12 @@ pub fn hello_instruction(payer: Pubkey, msg_account: Pubkey, msg: Vec<u8>) -> In
         data: Instructions::Hello { msg }.pack(),
     }
 }
+
+/// Builds a [`Instructions::Noop`] [`Instruction`]
+pub fn noop_instruction(msg: Vec<u8>) -> Instruction {
+    Instruction {
+        program_id: ID,
+        accounts: vec![],
+        data: Instructions::Noop { msg }.pack(),
+    }
+}

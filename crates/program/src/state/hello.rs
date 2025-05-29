@@ -1,6 +1,5 @@
-use borsh_derive::{BorshDeserialize, BorshSerialize};
 use putils::{
-    account::{AccountDeserialize, AccountSerialize, AccountWrite},
+    account::{AccountDeserialize, AccountRead, AccountSerialize, AccountWrite},
     discriminator::AccountDiscriminator,
 };
 
@@ -29,3 +28,5 @@ impl AccountDeserialize for Message {
 }
 
 impl AccountWrite for Message {}
+
+impl AccountRead for Message {}

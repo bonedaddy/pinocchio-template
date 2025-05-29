@@ -7,8 +7,4 @@ pub mod instructions;
 pub mod processor;
 pub mod state;
 
-pub mod prelude {
-    pub use borsh::{BorshDeserialize, BorshSerialize};
-}
-
 pub const ID: Pubkey = pinocchio_pubkey::pubkey!("9L3SSFhNeLgE5nVMwXmSfuc4khzxKpJvJNafJquxUd8v");

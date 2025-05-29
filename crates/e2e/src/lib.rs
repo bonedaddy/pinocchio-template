@@ -1,6 +1,5 @@
 use litesvm::LiteSVM;
 use litesvm_client::SVMClient;
-use program::prelude::*;
 use program::state::hello::Message;
 use program_loader::TemplateProgramLoader;
 use putils::account::AccountDeserialize;
@@ -59,5 +58,18 @@ impl TestClient {
             .replace('\0', ""),
             "hello world"
         );
+    }
+    pub fn noop_tx(&mut self, payer: &Keypair) {
+        let mut tx = Transaction::new_with_payer(
+            &[sdk::noop_instruction(b"hello world".to_vec())],
+            Some(&payer.pubkey()),
+        );
+
+        let svm: &mut LiteSVM = self.svm_client.as_mut();
+
+        tx.sign(&vec![payer], svm.latest_blockhash());
+
+        let res = svm.send_transaction(tx).unwrap();
+        println!("{res:#?}");
     }
 }
