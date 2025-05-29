@@ -3,6 +3,7 @@ use litesvm_client::SVMClient;
 use program::prelude::*;
 use program::state::hello::Message;
 use program_loader::TemplateProgramLoader;
+use putils::account::AccountDeserialize;
 use solana_sdk::{signature::Keypair, signer::Signer, transaction::Transaction};
 
 pub mod program_loader;
@@ -42,17 +43,20 @@ impl TestClient {
 
         let res = svm.send_transaction(tx).unwrap();
         println!("{res:#?}");
+
         let msg_acct: Message =
-            Message::try_from_slice(&svm.get_account(&msg.pubkey()).unwrap().data).unwrap();
+            Message::try_from_bytes(&svm.get_account(&msg.pubkey()).unwrap().data).unwrap();
+
         assert_eq!(
             String::from_utf8(
                 // need to trim the first 8 bytes
                 // we have to allocate some extra space in the account
                 // to store the length of the vector which is 4 bytes
                 // then there is the vector length info itself which is 4 bytes
-                msg_acct.msg
+                msg_acct.msg.to_vec()
             )
-            .unwrap(),
+            .unwrap()
+            .replace('\0', ""),
             "hello world"
         );
     }

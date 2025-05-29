@@ -1,5 +1,6 @@
 use hello::HelloAccounts;
 use pinocchio::{account_info::AccountInfo, ProgramResult};
+use putils::{instruction_packer::InstructionPacker, processor::InstructionProcessor};
 
 use crate::instructions::Instructions;
 
@@ -10,8 +11,8 @@ pub fn process(accounts: &[AccountInfo], instruction_data: &[u8]) -> ProgramResu
 
     match ix {
         Instructions::Hello { .. } => {
-            let accounts = HelloAccounts::try_from(accounts)?;
-            accounts.handler(ix)
+            let accounts = HelloAccounts::from_accounts(accounts)?;
+            accounts.try_process(ix)
         }
     }
 }

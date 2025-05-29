@@ -4,6 +4,10 @@ use pinocchio::{
     sysvars::{rent::Rent, Sysvar},
     ProgramResult,
 };
+use putils::{
+    account::{AccountDeserialize, AccountSerialize, AccountWrite},
+    processor::InstructionProcessor,
+};
 
 use crate::{instructions::Instructions, prelude::*, state::hello::Message};
 
@@ -29,18 +33,21 @@ impl<'a> TryFrom<&'a [AccountInfo]> for HelloAccounts<'a> {
     }
 }
 
-impl HelloAccounts<'_> {
-    pub fn handler(&self, ix: Instructions) -> ProgramResult {
-        let Instructions::Hello { msg: msg_data } = ix else {
+impl<'a> InstructionProcessor<'a, Instructions> for HelloAccounts<'a> {
+    fn from_accounts(accounts: &'a [AccountInfo]) -> Result<Self, ProgramError> {
+        HelloAccounts::try_from(accounts)
+    }
+    fn process(&self, instruction: Instructions) -> ProgramResult {
+        let Instructions::Hello { msg: msg_data } = instruction else {
             return Err(ProgramError::InvalidInstructionData);
         };
 
-        let lamports = Rent::get()?.minimum_balance(msg_data.len() + std::mem::size_of::<u32>());
+        let lamports = Rent::get()?.minimum_balance(Message::SERIALIZED_SIZE);
 
         pinocchio_system::instructions::CreateAccount {
             from: self.payer,
             to: self.msg,
-            space: msg_data.len() as u64 + std::mem::size_of::<u32>() as u64,
+            space: Message::SERIALIZED_SIZE as u64,
             lamports,
             owner: &crate::ID,
         }
@@ -48,14 +55,32 @@ impl HelloAccounts<'_> {
 
         pinocchio::msg!(&format!("{} {}", self.msg.data_len(), msg_data.len()));
 
-        let mut data = self.msg.try_borrow_mut_data()?;
-        Message { msg: msg_data }
-            .serialize(&mut &mut data[..])
-            .unwrap();
+        let mut parsed_message = [0u8; 32];
+        parsed_message[0..msg_data.len()].copy_from_slice(&msg_data[0..msg_data.len()]);
+
+        let msg_acct = Message {
+            msg: parsed_message,
+        };
+
+        pinocchio::msg!("writing");
+
+        msg_acct.account_write(self.msg)?;
+
+        pinocchio::msg!("reading");
+
+        let _ = Message::try_from_bytes(&self.msg.try_borrow_data()?).unwrap();
 
         Ok(())
     }
-    pub fn validations(&self) -> ProgramResult {
+    fn validations(&self, instruction: &Instructions) -> ProgramResult {
+        let Instructions::Hello { msg: msg_data } = instruction else {
+            return Err(ProgramError::InvalidInstructionData);
+        };
+
+        if msg_data.len() > 32 {
+            panic!("msg data is too large")
+        }
+
         assert!(pinocchio_system::check_id(self.system_program.key()));
 
         assert!(self.payer.is_signer() && self.payer.is_writable());

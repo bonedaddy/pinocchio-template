@@ -1056,6 +1056,7 @@ dependencies = [
  "litesvm",
  "litesvm_client",
  "program",
+ "putils",
  "sdk",
  "solana-sdk",
 ]
@@ -2594,6 +2595,16 @@ dependencies = [
  "pinocchio",
  "pinocchio-pubkey",
  "pinocchio-system",
+ "putils",
+]
+
+[[package]]
+name = "putils"
+version = "0.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fd5110c17e17f90702365e80adb5b3409c5ef6d184e86d67d4e45fbe24a92850"
+dependencies = [
+ "pinocchio",
 ]
 
 [[package]]
@@ -3138,6 +3149,7 @@ name = "sdk"
 version = "0.1.0"
 dependencies = [
  "program",
+ "putils",
  "solana-sdk",
 ]
 
